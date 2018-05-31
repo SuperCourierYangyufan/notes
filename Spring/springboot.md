@@ -1,4 +1,4 @@
-#Springboot
+# Springboot
 * #####@SpringBootApplication 告诉程序是一个springboot,是主配置类  
     该 @SpringBootApplication 注解等价于以默认属性使用 @Configuration ， @EnableAutoConfiguration 和 @ComponentScan 。
    ```
