@@ -1,0 +1,218 @@
+#easyui需要导入
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/js/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/js/easyui/themes/icon.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-1.8.3.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath }/js/easyui/jquery.easyui.min.js"></script>
+
+#基本布局
+<body class="easyui-layout">
+    <%--使用div描述每个区域  北 西 中 东 南--%>
+    <div title="管理系统" style="height: 100px" data-options="region:'north'">北部区域</div>      //region="center" ==data-options="region:'north'
+    <div title="菜单" style="width: 200px" data-options="region:'west'">西部区域</div>
+    <div data-options="region:'center'">中心区域</div>
+    <div style="width: 100px" data-options="region:'east'">东部区域</div>
+    <div style="height: 50px" data-options="region:'south'">南部区域</div>
+</body>
+
+#折叠面板
+        <%--制作折叠面板   data-options="fit:true"填充父容器  iconCls:'icon-save' 标题加上图标 等价 icon="icon-ok"-- %>
+        <div class="easyui-accordion" data-options="fit:true">
+            <div data-options="iconCls:'icon-save'" title="面板1">1</div>
+            <div data-options="iconCls:'icon-edit'" title="面板2">2</div>
+            <div data-options="iconCls:'icon-cut'"title="面板3">3</div>
+        </div>
+#选项卡
+    class="easyui-tabs" 其他与上面一样
+    折叠面板是上下翻跌,而选项卡是一个个标签页
+    data-options="closable:true"   让选项卡可以关闭
+#动态选项卡
+ <a class="easyui-linkbutton" >添加选项卡</a>   //按键
+
+                <script type="text/javascript">
+                                   $(function () {
+                                       $("#but1").click(function () {
+                                           //判断系统管理是否存在
+                                           var exit = $("#tables").tabs("exists","系统管理");
+                                           if(exit){ //若不是第一次选中
+                                               $("#tables").tabs('select','系统管理')
+                                           }else {
+                                               //调用tabs对象动态添加选项卡
+                                               $("#tables").tabs('add',
+                                                   {
+                                                       title: '系统管理',
+                                                       selected: false,
+                                                       closable:true,
+                                                       iconCls:'icon-cut',
+                                                       content: '<iframe FRAMEBORDER="0" HEIGHT="100%" WIDTH="100%" src="https://www.baidu.com/"></iframe>'
+                                                       //跳转的页面
+                                                   });
+                                               }
+                                       })
+                                   })
+                               </script>
+
+ #ztree使用
+ 引入  <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/ztree/zTreeStyle.css">
+       <script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-1.8.3.js"></script>
+       <script type="text/javascript" src="${pageContext.request.contextPath}/js/ztree/jquery.ztree.all-3.5.js"></script>
+
+
+                            <%--数 简单版--%>
+                           <ul id="zreee2" class="ztree">
+                               <script type="text/javascript">
+                                   $(function () {
+                                       var setting2 ={
+                                           data: {
+                                               simpleData: {
+                                                   enable: true    //开启简单树模式
+                                               }
+                                           }
+                                       };
+                                       //构造节点数据
+                                       var zTreeNodes2 =[
+                                           {"id":"1","pId":"0","name":"1"}, //id=自身id  pId(大写)=父亲id
+                                               {"id":"2","pId":"1","name":"2"},
+                                                    {"id":"4","pId":"2","name":"4"},
+                                               {"id":"3","pId":"1","name":"3"},
+                                                    {"id":"5","pId":"3","name":"5"},
+                                       ];
+                                       //调用api初始化
+                                       $.fn.zTree.init($("#zreee2"), setting2, zTreeNodes2);
+                                   });
+                               </script>
+                           </ul>
+
+
+                           <%--ajax版本--%>
+                           <div data-options="iconCls:'icon-cut'"title="面板4">
+                                           <ul id="zreee3" class="ztree">
+                                               <script type="text/javascript">
+                                                   $(function () {
+                                                       var setting3 ={
+                                                           data: {
+                                                               simpleData: {
+                                                                   enable: true    //开启简单树模式
+                                                               }
+                                                           },
+                                                           callback: {
+                                                               //为ztree节点绑定单击事件 treeNode为该节点的json数据
+                                                               onClick: function (event, treeId, treeNode) {
+                                                                   //判断是否有子节点
+                                                                   if(treeNode.page!=undefined){
+                                                                       //判断节点是否存在
+                                                                       var exit =$("#tables").tabs("exists",treeNode.name);
+                                                                       if(exit){
+                                                                           //选中
+                                                                           $("#tables").tabs("select",treeNode.name)
+                                                                       }else{
+                                                                           //动态添加选项卡
+                                                                           $("#tables").tabs("add",{
+                                                                               title:treeNode.name,
+                                                                               closable:true,
+                                                                               content: '<iframe FRAMEBORDER="0" HEIGHT="100%" WIDTH="100%" src=${pageContext.request.contextPath}'+treeNode.page+'></iframe>'
+                                                                           })
+                                                                       }
+                                                                   }
+                                                               }
+                                                           }
+                                                       };
+                                                       //使用ajax获取json
+                                                       var zTreeNodes3 = $(function () {
+                                                           $.post(
+                                                              "${pageContext.request.contextPath}/json/menu.json",
+                                                               {},
+                                                               function (data) {
+                                                                   //调用api初始化
+                                                                   $.fn.zTree.init($("#zreee3"), setting3, data);
+                                                               },
+                                                               "json"
+                                                           );
+                                                       })
+                                                   });
+                                               </script>
+                                           </ul>
+                                       </div>
+#jquery提示框
+ <script type="text/javascript" src="${pageContext.request.contextPath}/js/easyui/locale/easyui-lang-zh_CN.js"></script> //中文包
+
+ <script type="text/javascript">
+                 function onmessage() {
+                     $.messager.confirm("标题","你确定删除？",function (boolean) { //选择框
+                         if(boolean){
+                             $.messager.alert("标题","正在删除","error");//error info warning  提示框
+                         }else{
+                             $.messager.show({ //底部滑动框
+                                 title:"标题",
+                                 msg:"这就是消息",
+                                 timeout:3000,   //消失时间
+                                 showType:'slide' //滑动效果
+                             });
+                         }
+                     })
+                 };
+         </script>
+#下拉菜单
+<div title="管理系统" style="height: 100px" data-options="region:'north'">
+        <%--菜单--%>
+        <a data-options="iconCls:'icon-help',menu:'#mm'" style="color: blue" class="easyui-menubutton">控制面板</a>
+        <%--使用div制作下拉菜单--%>
+        <div id="mm">
+            <div data-options="iconCls:'icon-edit'" onclick="onmessage()">修改</div>
+            <div>联系管理员</div>
+            <div class="menu-sep"></div>
+            <div>退出</div>
+        </div>
+    </div>
+
+#校验
+<script type="text/javascript">
+                        $("#txtRePass").validatebox({
+                            required: true, //必须有值
+                            //  validType: 'email', //必须为电子邮箱格式
+                            validType:'length[1,10]',
+                        });
+                    </script>
+
+
+ var boolean = $("#repassword").form("validate"); 对表单进行校验
+
+#表单
+                     <table id="mybable">
+                        <script type="text/javascript">
+                            $(function () {
+                                $("#mybable").datagrid({  //将table标签装饰
+                                    //定义标题行所有的列
+                                    columns:[[
+                                        {title:'编码',field:'id',checkbox:true},
+                                        {title:'名字',field:'name'},
+                                        {title:'年龄',field:'age'}
+                                    ]],
+                                    url:'${pageContext.request.contextPath}/json/showuser.action', //指定数据表格发送ajax
+                                    rownumbers:true,//显示行号
+                                    singleSelect:true,//只能选一行
+                                    toolbar:[ //工具栏
+                                        {text:'添加',iconCls:'icon-add',handler:function () {
+                                                $.messager.alert("确定","添加","info")
+                                            }},
+                                        {text:'删除',iconCls:'icon-remove',handler:function () {
+
+                                            }},
+                                        {text:'修改',iconCls:'icon-edit',handler:function () {
+
+                                            }},
+                                        {text:'查询',iconCls:'icon-search',handler:function () {
+
+                                            }},
+                                    ],
+                                    pagination:true //显示分页条  发送请求page rows
+                                     //     {"total":123,
+                                     //      "rows":[
+                                     //        {"id":"1","name":"a","age":"13"},
+                                     //        {"id":"2","name":"b","age":"14"},
+                                     //         ...............
+                                     //                    ]}
+                                });
+                            })
+                        </script>
+                    </table>
+

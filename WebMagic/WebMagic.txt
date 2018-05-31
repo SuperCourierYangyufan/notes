@@ -1,0 +1,32 @@
+#WebMagic爬虫工具
+1.<dependency>
+      <groupId>us.codecraft</groupId>
+      <artifactId>webmagic-core</artifactId>
+      <version>0.7.3</version>
+  </dependency>
+  <dependency>
+      <groupId>us.codecraft</groupId>
+      <artifactId>webmagic-extension</artifactId>
+      <version>0.7.3</version>
+  </dependency>
+  ->需要引入log4j日志文件
+
+2.XPath语法
+bookstore	                    选取 bookstore 元素的所有子节点。
+/bookstore                      选取根元素 bookstore。//假如路径起始于正斜杠( / )，则此路径始终代表到某元素的绝对路径！
+bookstore/book	                选取属于 bookstore 的子元素的所有 book 元素。
+//book	                        选取所有 book 子元素，而不管它们在文档中的位置。
+bookstore//book	                选择属于 bookstore 元素的后代的所有 book 元素，而不管它们位于 bookstore 之下的什么位置。
+//@lang	                        选取名为 lang 的所有属性。
+*	                            匹配任何元素节点。
+@*	                            匹配任何属性节点。
+node()	                        匹配任何类型的节点。
+
+3.正则表达式
++ 号代表前面的字符必须至少出现一次（1次或多次）    * 号代表字符可以不出现，也可以出现一次或者多次（0次、或1次、或多次）
+? 问号代表前面的字符最多只可以出现一次（0次、或1次）  句点 (.) 匹配字符串中的各种打印或非打印字符，只有一个字符例外。这个例外就是换行符 (\n
+\\是转义字符  .*匹配多个任意字符  []里面是或的关系  ^除了(非)  {出现次数}->{出现最少,出现最多}
+
+
+4.实例
+WebMagic->scr->main->java->com.my.GithubRepoPageProcessor
