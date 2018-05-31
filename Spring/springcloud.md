@@ -1,13 +1,13 @@
 #SpringCloud
-1. #####dubbo基于rpc远程过程调用,cloud基于RestFul调用 (通信机制的区别)
-2. #####maven导入lombok
+1. #####   dubbo基于rpc远程过程调用,cloud基于RestFul调用 (通信机制的区别)
+2. #####   maven导入lombok
     ```
        @AllArgsConstructor  全参构造
        @NoArgsConstructor   无参构造
        @Data                get set toString
        @Accessors(chain = true)  链式 user.setName().setAge()... 
     ```
-3. #####创建配置类   @Configuration     <-restful风格开发
+3. #####   创建配置类   @Configuration     <-restful风格开发
     ```
         @Bean
         public RestTemplate getRestTemplate(){
@@ -16,7 +16,7 @@
     ```  
      controller层->return restTemplate.(post|get)ForObject("服务端地址","携带参数","返回参数类型.class")  
 
-4.  #####Eureka,类似于Zookeeper,注册中心
+4.  #####   Eureka,类似于Zookeeper,注册中心
     *  Eureka遵守AP(可用性)  Zookeeper遵守CP(一致性)    p:分区容错  
     *  **【注册中心】**
         * POM  
@@ -59,7 +59,7 @@
         ```
         * @EnableEurekaClient
         * 注册后暴露名字就是spring.application.name的值(PS.别带下划线)
-5.  #####Ribbon是一个客户端负载均衡的工具   //均是在消费者方操作
+5.  #####   Ribbon是一个客户端负载均衡的工具   //均是在消费者方操作
     * **【服务端】**
         * POM
         ```
@@ -80,7 +80,7 @@
         
         * 在启动类上@EnableEurekaClient
         * 对restTemplate调用方法,传入的第一个参数URL,前缀改为private static final String 名字 = "http://注册到eureka中的名字"
-6.  #####Feign是以一个接口加注解的服务端的Web服务客户端.
+6.  #####   Feign是以一个接口加注解的服务端的Web服务客户端.
     * POM
         ```
                   <artifactId>spring-cloud-starter-feign</artifactId>(公共模块与服务端均要)
@@ -99,7 +99,7 @@
                    @EnableFeignClients(basePackages = {"com.my.springcloud"})
                     @ComponentScan("com.my.springcloud") 
              ```
-7. #####Hystrix熔断器【客户端】
+7. #####   Hystrix熔断器【客户端】
     * POM
     ```
     <artifactId>spring-cloud-starter-hystrix</artifactId>
@@ -182,7 +182,7 @@
         【网页】
         http://ip:自定端口/hystrix 进入
         输入: http://客户端ip:端口/hystrix.stream 进行监控
-8. #####Zuul路由网关 提供=代理+路由+过滤 统一访问的入口  
+8. #####   Zuul路由网关 提供=代理+路由+过滤 统一访问的入口  
     【新路由模块】
     * POM
     ```
@@ -223,7 +223,7 @@
               prefix: /com                        #前缀
         ```
         * 访问  http://路由网关id:端口/mydept/访问路径
-9. #####分布式配置中心SpringCloud Config
+9. #####   分布式配置中心SpringCloud Config
     【Git】
     * clone一个新的仓库
     * YML并上传

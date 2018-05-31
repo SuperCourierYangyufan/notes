@@ -1,4 +1,4 @@
-#Docker
+# Docker
 1.  必须内核3. 10以上   uname -r 查看
 2.  yum install docker
 3.  启动  systemctl start docker     停止 systemctl stop docker
