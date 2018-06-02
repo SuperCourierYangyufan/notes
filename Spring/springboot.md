@@ -123,7 +123,7 @@
     2. ` <input type="hidden" name="_method" value="put|delete"/>`
 * #####  修改日期格式   spring.mvc.date-format=yyyy-MM-dd
 * #####  <mvc:view-controller path="请求路径" view-name="映射到那个文件"/>
-* #####  错误处理
+* #####  注解版错误处理
     1. 在模板文件夹下创建error文件夹,下面可以放置404.html,500.html(4xx.html,5xx.html),当放生响应错误的时候,便会自动跳转
     2. 错误页面可以取的属性   ->    timestamp:时间戳 status:状态码 error:错误提示 exception:异常对象 message:异常消息 errors:JSR303数据校验错误
     3. 异常处理类 == HandlerExceptionResolver
@@ -134,6 +134,44 @@
             * 需要Map存入json(JSON的每一类数据放入一次)
             * request.setAttribute("javax.servlet.error.status_code",400)
             * return:"forward:/error"
+* ##### 注解版拦截器
+      * 继承WebMvcConfigurerAdapter
+      * 需要注入自定义的拦截器
+      * 重写addInterceptors方法
+      * 添加拦截器并且设置拦截路径
+      * 代码
+          ```
+          public class ConfigBean extends WebMvcConfigurerAdapter{  
+              @Autowired
+              private TimerInterceptor timerInterceptor;
+          
+              @Override
+              public void addInterceptors(InterceptorRegistry registry) {
+                  registry.addInterceptor(timerInterceptor).addPathPatterns("/**").excludePathPatterns("/hello");
+              }
+          }
+          ```
+* ##### 注解版AOP
+      * 自定义类 @Aspect @Component 标注为aop类并注入
+      * 构写返回Object方法 @Around(execution表达式)  //@before @after等
+      * 方法传入参数 ProceedingJoinPoint
+          * proceedingJoinPoint.getArgs();//获得切点方法的所有参数
+          * proceedingJoinPoint.proceed();//执行方法后
+      * 返回 执行方法得到的object
+      ```
+      @Aspect
+      @Component
+      public class TestAspect {
+      
+          @Around("execution(* com.my.security.DemoApplication.*(..))")
+          public Object Testaop(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+              Object[] args = proceedingJoinPoint.getArgs(); //获得切点方法的所有参数
+              Arrays.stream(args).forEach(e-> System.out.println(e));
+              Object object = proceedingJoinPoint.proceed();//执行方法后
+              return object;
+          }
+      }
+      ```
 * ##### JDBC
     1. 数据库基本配置
     ```
@@ -175,3 +213,60 @@
           ddl-auto: update
       show-sql: true
  ```
+* ##### @RequestMapping(value="/user/{id:正则表达式}") 可以接受特定的值类型
+* ##### 数据验证
+      * 在实体类上加入验证性注解
+          ```
+              @NotBlank //字符串不能为空   
+              @NotEmpty //字符串和集合不能为空
+              @Pattern(regex="正则表达式")
+              @Email //必须是电子邮件
+              @Range(min= ,max= ) //数字大小
+              @URL //合法的URL
+              上面所有注解都有一个属性 message="自定义错误消息"
+          ```
+      * 在方法参数前@valid 开启验证
+      * 传入参数BindingResult errors)来存取错误信息
+          ```
+              errors.hasErrors() //判断是否有错误信息
+              errors.getAllErrors() //拿取全部错误信息
+          ```
+* ##### 多线程处理  
+      > 当一个请求进入Tomcat时,会用主线程进行处理,而使用这种多线程,便可以提高吞吐量  
+      ![多线程](https://github.com/SuperCourierYangyufan/notes/blob/master/img/%E4%BD%BF%E7%94%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B.PNG)
+      * 代码
+      ```
+       public Callable<String> async() throws Exception{
+              Callable<String> callable = new Callable<String>() {
+                  @Override
+                  public String call() throws Exception {
+                      //子线程代码
+                      return "success"; //正常返回
+                  }
+              };
+              return callable;
+          }
+      ```
+* ##### 文档说明swagger2
+      * POM
+      ```
+                   <!--生成文档-->
+                  <dependency>
+                      <groupId>io.springfox</groupId>
+                      <artifactId>springfox-swagger2</artifactId>
+                      <version>2.7.0</version>
+                  </dependency>
+                  <dependency>
+                      <groupId>io.springfox</groupId>
+                      <artifactId>springfox-swagger-ui</artifactId>
+                      <version>2.7.0</version>
+                  </dependency>
+      ```
+      * 启动类 @EnableSwagger2
+      * 注解,对于方法,参数,实体类属性说明
+      ```
+              @ApiParam(value = "参数说明")
+              @ApiModelProperty(value = "属性说明")
+              @ApiOperation(value = "方法说明")
+      ```
+      * http://localhost:8080/swagger-ui.html
