@@ -1,0 +1,96 @@
+#HTML
+1.<p></p>  表示一个段落
+2.<hr/> 生成水平线
+3.<b></b> 加粗 <strong></strong> 为粗体
+4.<i></i> 斜体 <em></em> em中的内容为斜体
+5.实体 &实体名字;  =>对于需要的转义的字符 &nbsp;
+6.<img src="图片" alt="在图片不能显示时对图片的描述" width="宽度" height="高度"/>
+        支持 jpg(不支持透明,一般用来保存照片) gif(支持动态图,可以支持简单透明)  png(支持复杂透明)
+7.<meta charset="UTF-8" name="关键字" content="详细内容1，详细内容2"> 在头文件中可以设置编码规则与关键内容
+8.<meta http-equiv="refresh" content="5;url=http://www.baidu.com"/>     5S后重定向百度
+9.<iframe src="地址"></iframe>  //不推荐 引入其他页面 跟img类似
+10.<small> 小的文字文本 进行版权声明内容
+11.<sup>设置上标 次方等设置  <sub>设置下标
+12.<del> 表示删除的内容 <ins>对文字添加下划线
+13.<pre> 对文本保留格式,不会忽略多个空格
+14.<ul><li> 无序列表   <ol><li> 有序列表  列表之间可以互相嵌套
+15.<table><tr>(<td>|<th>) 表格，行，(数据列|表头)
+    => table属性 border="表格线" width="表格宽"  align="居中"
+    => tr rowspan="纵向合并单元格"
+    => td colspan="横向合并单元格"
+16.<select name="" >(<optgroup label="分组名")<option value="">     下拉框
+17.<input type="reset/> 重置按钮
+18.<button type=""></.....> 灵活性更高
+19.<fieldset><legend>分组名</legend></...> 对表单项分组
+20.框架集 <frameset>  不能和body出现在同一个页面
+    <frameset row="(40%,*(剩余分配),50%)(行分割) cols="列分割">
+        <frame src="外部页面地址" />
+        .....
+         <frameset ...........>
+                <frame src="外部页面地址" /> (左侧选择面板上<a href="页面" name="对应名字")
+                <frame name="对应名字"   />  (最侧链接右侧面板跳转)
+                 .....
+         </frameset>
+    </frameset>
+#css使用
+1.同文件css 优先级: 在元素上设置的样式>id>类>元素属性>*>继承
+<style type="text/css">
+          .class{css样式;css样式;css样式;.....}
+          标签(p){css样式}
+          #id{css样式}
+          选择器1,选择器2{css样式}  多个选择器同时拥有同一个样式
+          祖先元素 后代元素(:first/last -child){css样式}     后代元素会自动继承父类的样式,但有些样式不会继承
+          父元素>直接子元素{css样式}
+          标签~后面全部兄弟元素{css}
+          标签[属性(title,class....)]{css} 可以令属性=某值
+          标签:not(选择器){不需要的css}
+</style>
+
+2.引入
+<link href="地址" type="text/css" rel="stylesheet" />
+
+3.div是一个块元素，会独占一行,主要为页面进行布局
+4.span是一个行内元素，只占自身大小,专门为一段文字进行设置样式(行内元素最好不要包含块元素),不支持设置宽高
+5.一个元素可以有多个class 以空格隔开
+6.超链接选择器 a:link 没有访问的链接  a:visited: 访问过的链接(这个只能设置颜色)  选择器:hover  鼠标放上去触发
+7.对任何元素加上title="提示内容"属性，当鼠标移入上去时会有提示
+8.像素大小可以设置为多少%   是为父元素的百分之几
+9.盒子模型
+    (内)内容区-内边距-边框-外边距(外)
+10.若是层级一样,结构上,下面会覆盖上面。脱离文本流会覆盖为脱离文本流的元素
+
+
+
+#CSS样式
+1.color:颜色
+2.font-size:字体大小
+3.background-color:背景颜色
+4.font-family:指定文字字体    华文彩云
+5.line-height:指定行高    需要写在font下面
+6.text-decoration:给文本添加线（上，中，下等等）
+7.text-align:文本对其方式
+8.text-indent:首行缩进多少像素
+9.border: 颜色 边框像素大小 solid(实线边框);(不能分别指定)
+10.(border-width   border-color   border-style) 4个 上右下左 3上，左右，下 2个 上下，左右(盒子模型大都数都是如此)
+11.padding-top/right/bottom/left 设置四个方向的内边距,元素的背景会延伸到内边距
+12.padding:像素点(可多个)
+13.margin-(top/right/bottom/left) 设置外边距   上左外边距会改变自身距离,而下右边距是挤其他元素
+    =>可以将值为auto 只能为水平方向  会将值设为最大,且内边距不会影响大小，自动修改
+    =>在网页中垂直方向的相邻兄弟外边距会发生外边距重叠,只会取最大值,而不是取合|若是父子垂直外边距重叠了,子元素外边距也给父元素
+    =>水平方向不会重叠
+    => *{margin:0;padding:0} 去除浏览器默认样式
+14.display:(none/inline/block/inline-block) 不被显示/将元素改为行内元素/将元素变为块元素/变成又可以修改宽高,又不会独占一行
+15.overflow:子元素溢出父元素处理方法  auto(多出来的通过滚动条显示)
+16.float:设置(左/右)元素浮动(left/right)
+17.clear:清除其他浮动元素对他的影响
+18.position:对元素进行定位
+  =>相对定位(灵魂出窍)
+  =>绝对定位(离他最近的开启定位的祖先元素进行定位,若没有,则对于浏览器窗口定位,脱离文档流)
+  =>固定定位(对于浏览器窗口定位,脱离文档流,且不通过滚动条移动！)
+19.z-index:设置元素层级  越大层级越高(没有开启定位不能使用,父元素永远不会盖住子元素)
+20.opacity:设置透明度[0,1]
+21.background-image:url(图片地址)   设置背景图片。可同时设置背景颜色
+  =>若是图片大于元素大小,则会只显示一部分。若是小于,则会平铺(background-repeat,用与设置背景图片重复方式)
+  =>背景图片是左上角显示(background-position:调整背景图片的位置)
+  =>background-attachment:设置背景图片是否和滚动条滚动而滚动(一般给body设置)
+22.border-spacing:调整表格外边框内边框距离
