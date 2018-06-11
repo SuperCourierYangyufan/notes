@@ -42,7 +42,7 @@
 5. ##### 事件冒泡:后代事件触发,祖先的相同事件也会触发 event.cancelBubble = true; //取消冒泡
 6. ##### 元素.addEventListener("事件不加on",function () {},false);  //可以添加多个相同的事件
 
-###BOM
+### BOM
 1. ##### window -代表整个浏览器的窗口,同时window也是网页中的全局对象    Navigator -代表浏览器的信息,识别不同浏览器  Location - 代表浏览器的地址信息
    * History - 代表浏览器的历史记录    Screen  - 代表用户的屏幕信息，显示器的纤细
 2. ##### location.reload();  刷新页面  若传入true会强制清除缓存刷新页面
@@ -163,7 +163,7 @@
             
             let people = new People("x",999,"男");
             people.showUser(); //调用父类方法
-            people.showPeople();
+            people.showPeople();__
         ```
 15. ##### set,map
     * let set = new Set(); //可放一个数组,会自动去重
@@ -175,4 +175,100 @@
         * map.delete(key);
         * map.get(key);
     * for(let i of set|map){};
+### 模块化
+1. ##### 安装
+    * 需要兼容性时采用
+    * cnpm install babel-cli browserify -g
+    * cnpm install babel-preset-es2015 --save-dev
+2. ##### 配置文件
+    * 项目目录下 .babelrc
+    ```
+        {
+          "presets":["es2015"]
+        }
+    ```
+3. ##### 暴露
+    * 分别暴露
+        ```
+            export function fun() {
+                console.log("fun");
+            }
+            export let arr = [1,2,3];
+            
+        ```
+    * 全局暴露
+        ```
+            let fun1 =  () => {
+                console.log("fun1")
+            }
+            let fun2 = () =>console.log("fun2");
+            export {fun1,fun2};
+        ```
+4. ##### 引入 `import {暴露的对象....fun1,fun2} from "路径";`
+5. ##### 转为ES5 
+    ```
+        babel 需要转化为ES5的js文件夹(子模块与总和) -d 转化后存放地址
+        browserify 转换后总和js -o 存放地址(需手动创建文件夹)
+    ```
+### Webpack
+1. ##### 安装
+    * cnpm install webpack@3.8.1 -g //全局安装    
+    * cnpm install webpack@3.8.1 --save-dev    //局部安装,并且加入依赖,并且打包不包含
+2.  ##### 全局引入
+    ```
+        "devDependencies": {
+            "webpack": "^3.8.1"
+          }
+    ```   
+3. ##### 基本使用
+    * webpack 主模块js地址 打包后模块js地址
+4. ##### 使用配置文件快速打包
+    ```
+        const path = require("path");
+        module.exports={  //记得进入cd进入当前空间
+            entry: "./index.js",   //记得前面./
+            output: {
+                filename: "bundle.js",
+                path:path.resolve(__dirname,'dist/')
+            }
+        };
+    ```     
+5. ##### 对图片与css进行打包
+   * 安装环境
+       * cnpm install css-loader style-loader --save-dev
+       * cnpm install file-loader url-loader --save-dev
+   * 入门js文件导入css
+       * import "./css/test.css";
+   * webpack.config.js修改
+   ```
+    const path = require("path");
+    module.exports={  //记得进入cd进入当前空间
+        entry: "./index.js",   //记得前面./
+     // publicPath:"../dist/",  //可选,为打包后的位置
+        output: {
+            filename: "bundle.js",
+            path:path.resolve(__dirname,'dist/')
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.css$/,      //css
+                    use: [ 'style-loader', 'css-loader' ]
+                },
+            // {
+            //     test: /\.(png|jpg|gif)$/,   //图片
+            //     use: [
+            //         {
+            //             loader: 'url-loader',
+            //             options: {
+            //                 limit: 8192
+            //             }
+            //         }
+            //     ]
+            // }
+            ]
+        }
+    };
+   ```
+        
        
