@@ -20,3 +20,10 @@
 17. 本地文件传入容器 docker cp 本地文件路径 ID全称:容器路径
 18. 容器传入本地 docker cp ID全称:容器文件路径 本地路径
 19. 重启容器 docker restart 容器ID|自定义名字
+
+#fastdfs
+docker pull mypjb/fastdfs
+mkdir /home/fastdfs
+docker run --add-host fastdfs.net:192.168.1.40 --name fastdfs --net=host -e TRACKER_ENABLE=1 -e NGINX_PORT=81 -v /home/fastdfs:/storage/fastdfs -it mypjb/fastdfs
+docker restart fastdfs
+firewall-cmd --zone=public --add-port=81/tcp --permanent;firewall-cmd --reload;
