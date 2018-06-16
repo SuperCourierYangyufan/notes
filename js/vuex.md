@@ -1,6 +1,6 @@
 # vuex
-1.   
-	![vuex](https://github.com/SuperCourierYangyufan/notes/blob/master/img/vuex.PNG)
+1. ##### 架构
+	* ![vuex](https://github.com/SuperCourierYangyufan/notes/blob/master/img/vuex.PNG)
 2. ##### 使用
     * cnpm install --save vuex
     * 编写store.js
