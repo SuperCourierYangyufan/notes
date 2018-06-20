@@ -113,6 +113,7 @@
         * th:(insert|replace|include)="~{根据springmvc前后缀解析前的地址页面::选择器(#id)}" //不需要设置模板了
         * 可以在~{}中模板名或选择器后加(),里面可以传入参数.导入的页面便会携带参数
     13. ![语法格式](https://github.com/SuperCourierYangyufan/notes/blob/master/img/thymeleaf%E8%AF%AD%E6%B3%95.png)
+	14. 清除spring.thymeleaf.cache=false    页面更新后ctrl+f9
 * ##### 国际化
     1. 可以以 在i18n文件夹下创建  (标题_zh_CH.properties,标题_en_US.properties,标题.properties 等国际化配置文件)
     2. 配置文件中Resource Bundle视图模式下进行编辑
