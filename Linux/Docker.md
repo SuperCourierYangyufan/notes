@@ -21,9 +21,20 @@
 18. 容器传入本地 docker cp ID全称:容器文件路径 本地路径
 19. 重启容器 docker restart 容器ID|自定义名字
 
-#fastdfs
-docker pull mypjb/fastdfs
-mkdir /home/fastdfs
-docker run --add-host fastdfs.net:192.168.1.40 --name fastdfs --net=host -e TRACKER_ENABLE=1 -e NGINX_PORT=81 -v /home/fastdfs:/storage/fastdfs -it mypjb/fastdfs
-docker restart fastdfs
-firewall-cmd --zone=public --add-port=81/tcp --permanent;firewall-cmd --reload;
+### Redis
+	* docker pull registry.docker-cn.com/library/redis
+	* docker run  -d -p 6379:6379 --name myredis registry.docker-cn.com/library/redis
+
+### RabbitMq
+	* docker pull registry.docker-cn.com/library/rabbitmq:3-management
+	* docker run -d -p 5672:5672 -p 15672:15672 --name myrabbitmq 镜像id
+	* 交换器:使用单点还是广播的模式,队列:经过交换器选择后将数据发送至队列
+		* guest 账号密码
+		* exchangs模式 
+			* Fanout 订阅
+			* Direct 点对点
+		* exchangs点击交换器Bindings绑定队列
+			* 前两项为队列名字便可
+		* quenues为队列
+			* Add a new queue //添加队列
+
