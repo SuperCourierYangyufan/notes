@@ -84,7 +84,7 @@
      ```
             logging:     // trace<debug<info<warn<error   logging:    file|path 只能用一个
                 level:   //日志级别                           file: springboot.log  //选择生成日志文件的位置及名字
-                    root(可以选择哪个文件的日志级别): trace       path: log/            //选择哪个文件夹下生成spring.log
+                                                             path: log/            //选择哪个文件夹下生成spring.log
                     
                     -》全局变量 Logger logger = LoggerFactory.getLogger(getClass());
                                 -> logger.(trace|debug|info|warn|error)("日志信息");
@@ -113,7 +113,6 @@
         * th:(insert|replace|include)="~{根据springmvc前后缀解析前的地址页面::选择器(#id)}" //不需要设置模板了
         * 可以在~{}中模板名或选择器后加(),里面可以传入参数.导入的页面便会携带参数
     13. ![语法格式](https://github.com/SuperCourierYangyufan/notes/blob/master/img/thymeleaf%E8%AF%AD%E6%B3%95.png)
-	14. 清除spring.thymeleaf.cache=false    页面更新后ctrl+f9
 * ##### 国际化
     1. 可以以 在i18n文件夹下创建  (标题_zh_CH.properties,标题_en_US.properties,标题.properties 等国际化配置文件)
     2. 配置文件中Resource Bundle视图模式下进行编辑
@@ -271,3 +270,160 @@
               @ApiOperation(value = "方法说明")
       ```
       * http://localhost:8080/swagger-ui.html
+* ##### cache缓存
+    * 简单使用
+        * 启动类@EnableCaching
+        * 基本注解
+            1. @Cacheable()  开启缓存
+                * value="指定缓存组件名字" 必须,可以为数组
+                * key="缓存数据的key(#{id})"  支持spel
+                * keyGenerator="key的生成方式" 不能与key共存
+                * cacheManager="指定用哪个缓存管理器"
+                * condition="指定条件缓存(#id>3)" 
+                * unless="指定条件不缓存"
+                * sync="是否异步"  unless失效
+            2. @CacheEvict() 清空缓存
+                * value必须
+                * key指定删除哪一个
+                * allEntries=true 删除全部,不用指定key了
+                * beforeInvocation=true 方法执行之前清空
+            3. @CachePut(value,key)  调用方法并更新缓存
+                * value,key必须
+                * value,key应该与Cacheable()里的一致,#resultF.id
+    * Redis
+        1. 导入包spring-boot-starter-data-redis
+        2. yml中 spring.redis.host= 主机名
+        3. 直接可以使用RedisTemplate对象
+            * redisTemplate.opsForValue();//操作字符串
+            * redisTemplate.opsForHash();//操作hash
+            * redisTemplate.opsForList();//操作list
+            * redisTemplate.opsForSet();//操作set
+            * redisTemplate.opsForZSet();//操作有序set
+        4. 保存对象需要对象进行序列化
+        > 在使用缓存便自动使用redis,注意实体类要序列化
+* ##### 消息队列
+    1. 导入包spring-boot-starter-amqp
+    2. YML
+    ```
+        spring:
+          rabbitmq:
+            host: 193.112.172.104
+            username: guest
+            password: guest
+            port: 5672
+    ```
+    3. 进入网页将交换器绑定队列|AmqpAdmin代码中进行操作
+        * 注入AmqpAdmin
+        * 创建交换器exchanges
+        * 测试方法中 创建交换器 队列 绑定
+        ```
+            @Autowired
+            	private AmqpAdmin amqpAdmin;
+            	@Test
+            	public void createExchanges(){
+            		amqpAdmin.declareExchange(new FanoutExchange("交换器名字")); //若交换器为单点模式应为DirectExchange("交换名字"));
+            		amqpAdmin.declareQueue(new Queue("队列名字",true));
+            		amqpAdmin.declareBinding(new Binding("队列名字",Binding.DestinationType.QUEUE,"交换器名字","队列名字",null));
+            	}
+        ```
+    4. @EnableRabbit在启动类上
+    5. RabbitTemplate进行操作
+        * rabbitTemplate.convertAndSend("交换器名字","队列名字",发送对象); //通过交换器发送该对象到队列中
+        * Object o = rabbitTemplate.receiveAndConvert("队列名字");  //获得队列的数据
+    6. @RabbitListener(queues = {"队列名字"})进行监听消息
+        * 方法参数为Message,通过message.getBody()可以获取数据或其他内容(推荐)
+        * 方法参数为发送对象的名字便也获取数据
+* ##### 任务处理
+    1. 异步任务
+        * @EnableAsync 在启动类上
+        * @Async在方法上开启异步任务  
+    2. 定时任务呀
+        * @EnableScheduling在启动类上
+        * @Scheduled(cron表达式)
+            * 6位,以空格分割
+            * cron表达式 ![cron表达式](https://github.com/SuperCourierYangyufan/notes/blob/master/img/cron%E8%A1%A8%E8%BE%BE%E5%BC%8F.PNG)
+    3. 邮件任务
+        * 加入spring-boot-starter-mail依赖
+        * YML
+            ```
+                spring:
+                  mail:
+                    username: yangyufan199691@163.com
+                    password: Yang199691
+                    host: smtp.163.com
+                    properties:
+                      mail:
+                        smtp:
+                          ssl:
+                            enable: true
+                # qq邮箱才需要properties
+            ```      
+        * 代码
+            ```
+                @Autowired
+                	private JavaMailSender javaMailSender;
+                	@Test
+                    	public void test02() throws Exception{
+                            MimeMessage message = javaMailSender.createMimeMessage();
+                            MimeMessageHelper helper = new MimeMessageHelper(message, true); //true代表要发送文件
+                            helper.setText("<H1>这是内容</H1>",true);//true代码会转为html
+                            helper.setSubject("标题");
+                            helper.setFrom("yangyufan199691@163.com");
+                            helper.setTo("18827421758@163.com");
+                            helper.addAttachment("1.jpg",new File("C:\\Users\\Administrator\\Desktop\\head.jpg"));
+                    	    javaMailSender.send(message);
+                    	}
+            ```
+* ##### Dubbo
+    1.  生产者
+        * 引入依赖
+        ```
+                <dependency>
+                    <groupId>com.alibaba.boot</groupId>
+                    <artifactId>dubbo-spring-boot-starter</artifactId>
+                    <version>0.1.0</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.github.sgroschupf</groupId>
+                    <artifactId>zkclient</artifactId>
+                    <version>0.1</version>
+                </dependency>
+        ```
+        * YML
+        ```
+            dubbo:
+              application:
+                name: demo-producer
+              registry:
+                address: zookeeper://193.112.172.104:2181
+              scan:
+                base-packages: com.my.demo6.service
+        ```
+        * 实现类Impl(必须为实现类得有接口父类)
+        ```
+            @Component
+            @Service //dubbo下的
+        ```
+    2. 消费者
+        * 依赖同样
+        * yml只需要name,address
+        * 将生产者的接口类全部放在消费者这里,要求路径一样
+        * 引用@Reference,(duboo的实现),放在引用类上
+* ##### 热部署
+    * 依赖
+        ```
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-devtools</artifactId>
+                <optional>true</optional>
+                <version>1.5.14.RELEASE</version>
+            </dependency>
+        ```
+    * ctrl+F9 后便可以修改
+* ##### 监控管理
+    * 依赖sprng-boo-stater-actuator
+    * YML
+            `managment.sercurity.enabled=fales`
+    * 监控路径![监控路径](https://github.com/SuperCourierYangyufan/notes/blob/master/img/%E7%9B%91%E6%8E%A7.PNG)
+        
+            
