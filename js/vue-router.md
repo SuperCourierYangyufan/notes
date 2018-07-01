@@ -27,15 +27,15 @@
         * 导入import router from "./router/index.js"
         * Vue新增属性router:router
     * 页面中
-        * <router-link to="/about">about</router-link> //约等于<a>标签
-        * <router-view></router-view> 为对应展示的组件
+        * `<router-link to="/about">about</router-link>` //约等于<a>标签
+        * `<router-view></router-view>` 为对应展示的组件
 2. ##### 嵌套路由
     * 在父组件的路由配置中添加children属性
     * children:[{path: component},{}]
     * path属性要在路径之前加上父组件路径,或不加/
     * 若想初始化显示某组件,与基本相似,path:""便可
 3. ##### 路由缓存
-    * 在<router-view>外包裹一层<keep-alive>
+    * 在`<router-view>外包裹一层<keep-alive>`
 4. ##### 参数传递
     * 路径携带id后台查询 this.$route为当前组件
         * 在path中可以以path:"/about/:id"来进行占位
