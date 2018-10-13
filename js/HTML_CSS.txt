@@ -94,3 +94,12 @@
   =>背景图片是左上角显示(background-position:调整背景图片的位置)
   =>background-attachment:设置背景图片是否和滚动条滚动而滚动(一般给body设置)
 22.border-spacing:调整表格外边框内边框距离
+23.flex-direction: column; 让flex布局垂直布局
+24.align-items:center;居中对齐弹性盒的各项元素
+25.border-radius: (图片宽高一半)rpx; 图片变为圆角
+26.font-weight: ;字体加粗
+27.vertical-align:middle;把此元素放置在父元素的中部,让图片和文字对齐
+28.text-indent:缩进几个子就填几个字的大小;段落缩紧
+29. white-space: nowrap; //不换行
+30. overflow: hidden;text-overflow: ellipsis; 将超出部分以点点点代替
+  
