@@ -425,5 +425,39 @@
     * YML
             `managment.sercurity.enabled=fales`
     * 监控路径![监控路径](https://github.com/SuperCourierYangyufan/notes/blob/master/img/%E7%9B%91%E6%8E%A7.PNG)
+* ##### 自动装配知识点
+	* 组件自动装配流程
+		1. 激活: @EnableAutoConfiguration
+		2. 实现: XXXAutoConfiguration
+		3. 配置: /META-INF/spring.factories
+    * 自定义条件装配
+        1. 基于配置方式实现 @Profile //当传入相应的参数,执行相应的方法
+        2. 基于编程方式实现 @Conditional //传入一个匹配对象,该对象会继承Condition,重写方法,获得注解内属性进行比较,true才执行@Conditional的方法
+    * @enable模块是是指具备相同领域的功能组件集合
+    * @componentScan指定扫描那些包开启注解
+    * @Configuration等于@component,来代替XML注册
+
+* ##### 使用原始servlet
+    * 基本原生使用
+        1. 在启动类同级目录下建立包
+        2. 创建类
+        3. 类注解@WebServlet(urlPatterns="映射路径")
+        4. 类继承HttpServlet,并重写doGet,doPost方法
+        5. 在启动类上@ServletComponentScan(basePackages = "servlet类路径")
+    * 异步servlet
+        1. @webServlet(...,asyncSupported = true) //开启异步
+        2. 代码部分
+            ``` 
+            AsyncContext async = req.startAsync();
+                async.start(()->{
+                    try {
+                     //异步代码
+                     //触发完成
+                     async.complete();
+                    } catch (IOException e) {
+                      e.printStackTrace();
+                    }
+            });
+             ```
         
             

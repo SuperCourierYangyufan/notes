@@ -1,4 +1,4 @@
-#HTML
+﻿#HTML
 1.<p></p>  表示一个段落
 2.<hr/> 生成水平线
 3.<b></b> 加粗 <strong></strong> 为粗体
@@ -102,4 +102,6 @@
 28.text-indent:缩进几个子就填几个字的大小;段落缩紧
 29. white-space: nowrap; //不换行
 30. overflow: hidden;text-overflow: ellipsis; 将超出部分以点点点代替
+31. justify-content:center; //flex居中
+
   
