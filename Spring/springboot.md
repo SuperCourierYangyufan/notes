@@ -15,7 +15,7 @@
                </plugins>
        </build>
 ```
-* ##### @RestController  = @ResponseBody*@Controller
+* ##### @RestController  = @ResponseBody+@Controller
 * ##### 嵌入式servlet容器(默认Tomcat)
   1. server.port=8080  修改tomcat的端口号
   2. 以war包的方式进行项目创建可以使用外部tomcat,创建目录结构,便可以使用jsp
@@ -25,24 +25,24 @@
   4. 使用原生servlet,Filter,Listener
      ```
         <bean class="org.springframework.boot.web.servlet.ServletRegistrationBean">   //property注入页OJBK
-                <constructor-arg name="servlet" ref="myServlet"/>     //该类需要继承HttpServlet 的doGet|doPost方法 //需要注入
-                <constructor-arg name="urlMappings" value="/servlet"/> //访问路径
+           <constructor-arg name="servlet" ref="myServlet"/>     //该类需要继承HttpServlet 的doGet|doPost方法 //需要注入
+           <constructor-arg name="urlMappings" value="/servlet"/> //访问路径
        </bean>
      ```
      ```
-        ><bean class="org.springframework.boot.web.servlet.FilterRegistrationBean">
-                             <property name="filter" ref="myFilter"/>   //需要实现Filter,并注入
-                             <property name="urlPatterns" >
-                                 <list>                                 //多个拦截路径
-                                     <value>/servlet</value>
-                                     <value>/success</value>
-                                 </list>
-                             </property>
+        <bean class="org.springframework.boot.web.servlet.FilterRegistrationBean">
+           <property name="filter" ref="myFilter"/>   //需要实现Filter,并注入
+              <property name="urlPatterns" >
+                  <list>            //多个拦截路径
+                     <value>/servlet</value>
+                      <value>/success</value>
+                  </list>
+              </property>
          </bean>
      ```
      ```
         <bean class="org.springframework.boot.web.servlet.ServletListenerRegistrationBean">
-                              <property name="listener" ref="myLintener"/>    //需要实现相应监听的接口(ServletContextListener),并注入
+             <property name="listener" ref="myLintener"/>    //需要实现相应监听的接口(ServletContextListener),并注入
         </bean>
      ```
 * ##### application.yml ->  k:换行+空格v:值
@@ -60,7 +60,7 @@
                 -(空格)dog
         ```
     4. 可以使用占位符 ${}  里面可以写 random. 产生随机数|用前面的属性名占位,用:进行默认赋值-> dog: ${User.name:(没有空格)杨宇帆}
-* #####     @ConfigurationProperties(prefix = "person") //告诉springboot将本类中的所有属性和配置文件中相关的配置进行绑定 //prefix:告诉配置文件中那个下面的属性进行映射
+* #####     @ConfigurationProperties(prefix = "person")//告诉springboot将本类中的所有属性和配置文件中相关的配置进行绑定 //prefix:告诉配置文件中那个下面的属性进行映射
 * #####  可以对自己定义的参数进行提示
      ```
      <dependency>
