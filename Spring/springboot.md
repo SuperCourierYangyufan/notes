@@ -61,6 +61,18 @@
         ```
     4. 可以使用占位符 ${}  里面可以写 random. 产生随机数|用前面的属性名占位,用:进行默认赋值-> dog: ${User.name:(没有空格)杨宇帆}
 * #####     @ConfigurationProperties(prefix = "person")//告诉springboot将本类中的所有属性和配置文件中相关的配置进行绑定 //prefix:告诉配置文件中那个下面的属性进行映射
+				```
+					@Configuration
+					@ConfigurationProperties(prefix = message.my)
+					public class message {
+						private string msg = ""{get;set;}......
+   
+					}
+					
+					yml中可以message.my.msg = 值进行固定
+					通过message类.getMsg()获得yml的值
+
+				```
 * #####  可以对自己定义的参数进行提示
      ```
      <dependency>
