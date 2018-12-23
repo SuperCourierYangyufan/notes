@@ -2,9 +2,11 @@
 1. @Entity                   //表示持久化类
 2. @Table(name="JPA_PERSONS")  // 指定数据库名字，可以不写
 3. get方法上
-  ``` @GeneratedValue(generator = "system-uuid")//主键策略，不写里面的策略为自增   
+  ``` 
+	  @GenericGenerator(name = "uuid", strategy = "uuid")//主键策略，不写里面的策略为自增   
       @Id    //主键
       @Column(name = "password",length = 50,nullable = false) //数据库名字，长度，不能为空 可以不写
+	  @Column(columnDefinition="timestamp default current_timestamp") //设置时间默认为当前时间
       @Temporal(TemporalType.DATE) //对于时间类型指定格式
   ```
 4. 新增 persist //添加数据不能设置ID

@@ -106,8 +106,11 @@
 * ##### Thymeleaf ->引入spring-boot-starter-thymeleaf  
     1. (更换3.0版本)
     ``` 
-         <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>  
-         <thymeleaf-layout-dialect.version>2.2.2</thymeleaf-layout-dialect.version>
+        <properties>
+			<java.version>1.8</java.version>
+			<thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
+			<thymeleaf-layout-dialect.version>2.2.2</thymeleaf-layout-dialect.version>
+		</properties>
     ```
     2. 默认前置位templates文件夹  默认后缀为.html (springmvc返回)
     3. 导入名称空间  `<html lang="en" xmlns:th="http://www.thymeleaf.org">`
