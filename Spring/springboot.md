@@ -128,6 +128,20 @@
         * th:(insert|replace|include)="~{根据springmvc前后缀解析前的地址页面::选择器(#id)}" //不需要设置模板了
         * 可以在~{}中模板名或选择器后加(),里面可以传入参数.导入的页面便会携带参数
     13. ![语法格式](https://github.com/SuperCourierYangyufan/notes/blob/master/img/thymeleaf%E8%AF%AD%E6%B3%95.png)
+* ##### freemark
+	1. yml
+	```
+		spring.freemarker.charset=UTF-8
+		spring.freemarker.content-type=text/html;charset=UTF-8
+		spring.freemarker.expose-request-attributes=true
+		spring.freemarker.expose-session-attributes=true
+		spring.freemarker.expose-spring-macro-helpers=true
+		spring.freemarker.cache=false
+		spring.freemarker.suffix=.ftl
+		spring.freemarker.settings.datetime_format=yyyy-MM-dd HH:mm:ss
+		spring.freemarker.settings.default_encoding=UTF-8
+	```
+	2. html文件以.ftl结尾
 * ##### 国际化
     1. 可以以 在i18n文件夹下创建  (标题_zh_CH.properties,标题_en_US.properties,标题.properties 等国际化配置文件)
     2. 配置文件中Resource Bundle视图模式下进行编辑
@@ -144,11 +158,20 @@
     3. 异常处理类 == HandlerExceptionResolver
         * 在类上标注@ControllerAdvice
         * 在方法上标注@ExceptionHandler("异常类.class")
-        * 方法与普通controller方法一致,可通过参数 Exception e 获得信息
-        * 这种方式可以自定义springboot错误时发送的json数据
-            * 需要Map存入json(JSON的每一类数据放入一次)
-            * request.setAttribute("javax.servlet.error.status_code",400)
-            * return:"forward:/error"
+        ```
+			@ControllerAdvice
+			public class PageExceptionConfig {
+				private static final Logger logger = LoggerFactory.getLogger(ErrorHandler.class);
+
+				@ExceptionHandler(value ={PageException.class})
+				public String err500(HttpServletRequest request,Exception e){
+					logger.error(e.getMessage(),e);
+					logger.error(request.getRequestURI()+" :error:500");
+					return "error/500";
+				}
+
+			}
+		```
 * ##### 注解版拦截器
       * 继承WebMvcConfigurerAdapter
       * 需要注入自定义的拦截器
