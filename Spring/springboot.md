@@ -198,14 +198,56 @@
     2. 在resources下放置schema.sql文件会在项目启动时运行(建表语句),data.sql(数据语句)
     3. 指定sql文件名和路径  -> spring.datasource.schema=classpath:schema-all.sql
     4. (@Autowired)jdbcTemplate.update(增删改)  query系列查询
-    5. 导入常量池后 spring.datasource.type=com.alibaba.druid.pool.DruidDataSource 引入
-        ```
-            dbcp2:
-              min-idle: 5  //数据库连接池最小维持连接数
-              initial-size: 5 //初始化连接数
-              max-total: 5    //最大连接数
-              max-wait-millis: 200   //等待连接获取最大超时时间
-        ```
+    5. druid连接池
+		* 导入包
+		* 写config类
+			```
+				@Configuration
+				public class DruidConfig {
+
+					@ConfigurationProperties(prefix="spring.druid")
+					@Bean(initMethod="init",destroyMethod="close")
+					public DruidDataSource dataSource(Filter statFilter) throws SQLException{
+						DruidDataSource dataSource = new DruidDataSource();
+						dataSource.setProxyFilters(Lists.newArrayList(statFilter()));
+						return dataSource;
+					}
+
+					@Bean
+					public Filter statFilter(){
+						StatFilter filter = new StatFilter();
+						filter.setSlowSqlMillis(5000);
+						filter.setLogSlowSql(true);
+						filter.setMergeSql(true);
+						return filter;
+					}
+
+
+					@Bean
+					public ServletRegistrationBean servletRegistrationBean(){
+						return new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
+					}
+
+				}
+			```
+		* yml
+			```
+				spring:
+				  druid:
+					driverClassName: com.mysql.jdbc.Driver
+					url: jdbc:mysql://localhost:3306/houses
+					username: root
+					password: admin
+				#   最大连接,最小连接,获取连接的最大等待
+					maxActive: 30
+					minIdle: 5
+					maxWait: 10000
+				#    解决mysql18消失问题,空闲连接检查间隔,空闲连接最小空闲时间
+					validationQuery: SELECT 'x'
+					timeBetweenEvictionRunsMillis: 60000
+					minEvictableIdleTimeMillis: 300000
+
+			```
 * ##### mybatis
     1. 注解版
         * 在同名实体类接口上@mapper  在符合规则的方法上@(insert|update|delete|query)
