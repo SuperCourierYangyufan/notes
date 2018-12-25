@@ -67,13 +67,14 @@
 
 19. springdata-redis
  ```
- @Autowired
- private RedisTemplate redisTemplate;
- =>redisTemplate.opsForValue();//操作字符串
-      redisTemplate.opsForHash();//操作hash
-      redisTemplate.opsForList();//操作list
-      redisTemplate.opsForSet();//操作set
-      redisTemplate.opsForZSet();//操作有序set
-      
-ops.set(key,value,10L, TimeUnit.SECONDS); 第三个个long型 第四个设置为秒
+      @Autowired
+      private RedisTemplate redisTemplate;
+	  
+		  redisTemplate.opsForValue();//操作字符串
+		  redisTemplate.opsForHash();//操作hash
+		  redisTemplate.opsForList();//操作list
+		  redisTemplate.opsForSet();//操作set
+		  redisTemplate.opsForZSet();//操作有序set
+		  redisTemplate.expire(user.getId(),randomKeyTime, TimeUnit.SECONDS);    第三个个long型 第四个设置为秒
+		  ops.set(key,value,10L, TimeUnit.SECONDS); 第三个个long型 第四个设置为秒
 ```
