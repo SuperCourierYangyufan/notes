@@ -56,12 +56,12 @@
         * 以And进行条件连接，并且属性名称的个数要与参数位置一一对应  
         * 支持级联操作，不过当名字相同时，会优先查询类中名字
   * 可以创建方法,在上面使用@query("jpql语句"),自定义方法
-        *占位符有两种  
-			* ?1 , ?2  参数与？number  要一一对应  
-            * 名字一，:名字二   在参数前@Param("名字对应")  
-        * @Query(value = "sql语句",nativeQuery = true)  //原生sql查询  
-        * @Modifying 在@query上时，可以使用jpql的update 和 delete方法 ,但是不能用save  
-		* 使用事务
+	*占位符有两种  
+		* ?1 , ?2  参数与？number  要一一对应  
+        * 名字一，:名字二   在参数前@Param("名字对应")  
+    * @Query(value = "sql语句",nativeQuery = true)  //原生sql查询  
+    * @Modifying 在@query上时，可以使用jpql的update 和 delete方法 ,但是不能用save  
+	* 使用事务
   * 正常情况下的子接口，应该继承CrudRepository接口 有save等方法  save=update
   * 分页和排序的子接口 PagingAndSortingRepository
 	*  findAll(page)  分页信息 PageRequest page = new PageRequest(当前页数(从0开始),每页多少数据,sort);
