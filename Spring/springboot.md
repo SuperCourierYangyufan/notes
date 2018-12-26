@@ -174,11 +174,13 @@
 		```
 * ##### 注解版拦截器
       * 继承WebMvcConfigurerAdapter
+	  * @Configuration
       * 需要注入自定义的拦截器
       * 重写addInterceptors方法
       * 添加拦截器并且设置拦截路径
       * 代码
           ```
+		  @Configuration
           public class ConfigBean extends WebMvcConfigurerAdapter{  
               @Autowired
               private TimerInterceptor timerInterceptor;
