@@ -51,9 +51,9 @@
 18. springdata-jpa (属性不能带下划线)
   * 自定义接口extends Repository<Person,Integer> //第一个参数，处理的对象,第二个是主键的类型
   * 或者通过@RepositoryDefinition(domainClass = Person.class,idClass = Integer.class)
-  * 查询时  =》 以find|read|get开头
-        * 涉及查询条件，以关键字连接，首字母大写
-        * 以And进行条件连接，并且属性名称的个数要与参数位置一一对应
+  * 查询时  =》 以find|read|get开头  
+        * 涉及查询条件，以关键字连接，首字母大写  
+        * 以And进行条件连接，并且属性名称的个数要与参数位置一一对应  
         * 支持级联操作，不过当名字相同时，会优先查询类中名字
   * 可以创建方法,在上面使用@query("jpql语句"),自定义方法
         *占位符有两种  
