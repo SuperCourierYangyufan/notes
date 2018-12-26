@@ -5,9 +5,11 @@
   ``` 
 	  @GenericGenerator(name = "uuid", strategy = "uuid")//主键策略，不写里面的策略为自增   
       @Id    //主键
+	  @GeneratedValue  //自动递增
       @Column(name = "password",length = 50,nullable = false) //数据库名字，长度，不能为空 可以不写
 	  @Column(columnDefinition="timestamp default current_timestamp") //设置时间默认为当前时间
       @Temporal(TemporalType.DATE) //对于时间类型指定格式
+	  @Transient 忽略该字段,不会生成字段
   ```
 4. 新增 persist //添加数据不能设置ID
 5. 删除 remove  //删除数据不能删除游离对象
@@ -50,17 +52,19 @@
   * 自定义接口extends Repository<Person,Integer> //第一个参数，处理的对象,第二个是主键的类型
   * 或者通过@RepositoryDefinition(domainClass = Person.class,idClass = Integer.class)
   * 查询时  =》 以find|read|get开头
-         * 涉及查询条件，以关键字连接，首字母大写
-         * 以And进行条件连接，并且属性名称的个数要与参数位置一一对应
-         * 支持级联操作，不过当名字相同时，会优先查询类中名字
+        * 涉及查询条件，以关键字连接，首字母大写
+        * 以And进行条件连接，并且属性名称的个数要与参数位置一一对应
+        * 支持级联操作，不过当名字相同时，会优先查询类中名字
   * 可以创建方法,在上面使用@query("jpql语句"),自定义方法
-         *占位符有两种 一：?1 , ?2  参数与？number  要一一对应  
-                       二： :名字一，:名字二   在参数前@Param("名字对应")
-         * @Query(value = "sql语句",nativeQuery = true)  //原生sql查询
-         * @Modifying 在@query上时，可以使用jpql的update 和 delete方法 ,但是不能用save
+        *占位符有两种  
+			* ?1 , ?2  参数与？number  要一一对应  
+            * 名字一，:名字二   在参数前@Param("名字对应")
+        * @Query(value = "sql语句",nativeQuery = true)  //原生sql查询
+        * @Modifying 在@query上时，可以使用jpql的update 和 delete方法 ,但是不能用save
+		* 使用事务
   * 正常情况下的子接口，应该继承CrudRepository接口 有save等方法  save=update
   * 分页和排序的子接口 PagingAndSortingRepository
-    *  findAll(page)  分页信息 PageRequest page = new PageRequest(当前页数(从0开始),每页多少数据,sort);
+	*  findAll(page)  分页信息 PageRequest page = new PageRequest(当前页数(从0开始),每页多少数据,sort);
     *  findAll(sort)  sort分装排序信息   Sort sort = new Sort(可以是多个order)    new order(Direction.DESC,"排序属性")
   * JpaRepository PagingAndSortingRepository的扩展   saveAndFlush() = merge方法
   * JpaSpecification 里面可以进行带查询条件的分页
