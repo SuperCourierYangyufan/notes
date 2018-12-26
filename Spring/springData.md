@@ -59,7 +59,7 @@
         *占位符有两种  
 			* ?1 , ?2  参数与？number  要一一对应  
             * 名字一，:名字二   在参数前@Param("名字对应")  
-        * @Query(value = "sql语句",nativeQuery = true)  //原生sql查询
+        * @Query(value = "sql语句",nativeQuery = true)  //原生sql查询  
         * @Modifying 在@query上时，可以使用jpql的update 和 delete方法 ,但是不能用save  
 		* 使用事务
   * 正常情况下的子接口，应该继承CrudRepository接口 有save等方法  save=update
