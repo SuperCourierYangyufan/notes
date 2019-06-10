@@ -32,3 +32,9 @@
 ### 任务调度
 1. crontab -e(编写定时)/-r(删除所有定时)/-l(查看所有定时）
 2. 脚本规则 */1 8,20 10-20 * * 任务语句 (分/时/天/月/周几)(每月的10号到20号的早8点或晚8点每分钟执行一次)
+
+### 进程管理
+1. 查询进程 ps -aux|grep 进程名
+2. 关闭进程 kill -9(强行) 进程名
+3. 服务管理 service/systemctl(centos7后使用) [start|stop|restart|reload|status]
+4. 网络情况 netstat -anp|grep 进程名
