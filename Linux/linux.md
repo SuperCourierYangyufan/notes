@@ -38,3 +38,12 @@
 2. 关闭进程 kill -9(强行) 进程名
 3. 服务管理 service/systemctl(centos7后使用) [start|stop|restart|reload|status]
 4. 网络情况 netstat -anp|grep 进程名
+
+### Shell
+1. 脚本以#!/bin/bash 开头,文件为.sh后缀
+2. 执行脚本需要给与权限 chmod 744 脚本名
+3. 设置变量 A=10 ,使用时为$A
+4. 撤销变量 unset 变量名(readonly静态变量不能撤销)
+5. =号两侧不能有空格
+6. A=$(命令) 将命令的结果返回给A,命令需要在$()里面
+7. export 变量    可将变量作为环境变量,在别的shell脚本中也可使用,之前需要让其生效 source 该文件
