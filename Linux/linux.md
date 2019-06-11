@@ -75,3 +75,30 @@
         ;;
         esac
     ```
+12. for语句
+     ```
+     //循环每个元素
+     for i in A B C
+     do
+        echo $i
+     done
+     //循环数字
+     for((i=1;i<=100;i++))
+     do
+        sum=$[$sum+$i]
+     done
+     ehco $sum
+     ```
+13. while循环
+    ```
+
+    SUM=0
+    i=${1}
+    while [ $i -gt 0 ]
+    do
+        SUM=$[$SUM+$i]
+        i=$[$i-1]
+    done
+    echo $SUM
+
+    ```
