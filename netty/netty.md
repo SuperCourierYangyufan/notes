@@ -39,3 +39,5 @@
 			}
 		}
 	```
+	2. 服务启动，无线程，阻塞在serverSocket.accept
+	3. 有访问，无数据，阻塞在inputStream.read(bytes)
