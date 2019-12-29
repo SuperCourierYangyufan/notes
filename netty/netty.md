@@ -6,7 +6,7 @@
 	3. AIO 异步非阻塞 适用于连接数多且时间长  相册，系统层面的并发
 3. BIO
 	1. BIO服务端代码
-	···
+	```
 		 public static void main(String[] args) throws Exception{
 			ExecutorService threadPool = Executors.newCachedThreadPool();
 			ServerSocket serverSocket = new ServerSocket(6666);
@@ -38,4 +38,4 @@
 				});
 			}
 		}
-	···
+	```
