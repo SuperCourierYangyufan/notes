@@ -41,3 +41,26 @@
 	```
 	2. 服务启动，无线程，阻塞在serverSocket.accept
 	3. 有访问，无数据，阻塞在inputStream.read(bytes)
+4. NIO基础
+	1. 由通道，缓存区，选择器构成
+	2. 客户端《1=1》缓存区《1=1》管道《1=N》选择器(1个线程多个选择器)《N=1》server服务 
+	3. NIO以块进行数据处理，而Bio以流进行数据处理，所有效率高很多
+	4. select 是根据 事件来切换到不同的通道上去的
+	5. Buffer 就是一个内存块，底层是一个数组
+	6. BIO要么是输入或输出流，而Nio的buffer是双向的，需要 flip方法切换
+	7. channel也是双向的
+5. buffer
+	1. buff入门代码
+		```
+		public static void main(String[] args) {
+			//创建一个buff,大小为5，可以存放5个int
+			IntBuffer intBuffer = IntBuffer.allocate(5);
+			//存放数据
+			for(int i=0;i<intBuffer.capacity();i++)intBuffer.put(i);
+			//读取数据,将buff读写切换
+			intBuffer.flip();
+			//读取，get内含索引
+			while (intBuffer.hasRemaining())System.out.println(intBuffer.get());
+		}
+		```
+	2. 
