@@ -1,0 +1,76 @@
+# mongodb
+### 结构
+1. 结构
+    - 数据库=数据库(database)
+    - table = collection
+    - row = document
+    - column = filed
+    - index = index
+    - 表连接 = 嵌入文档
+    - 主键 = _id
+    - 聚合操作,如group
+2. 基本命令
+    - mongo 进入mongo
+    - show databases 展示所用db
+    - db 展示现在的库
+    - use (database) 切换库,创建库(懒加载)
+    - show users 
+    - db.createUser({user:"haizhi",pwd:"!haizhi1234",roles:[{role:'root',db:'admin'}]}) 创建用户
+    - db.auth('haizhi','!haizhi1234')  认证
+    - show tables
+3. 文档命令
+    - db.(table).命令(key:value) 新增
+    - key:value可以一个json对象,如 json={},然后将json放入参数中
+    - 单条插入
+        * insert
+        * insertOne
+        * save(不指定_id 新增,指定 修改)
+    - 批量
+        * insert
+        * insertMany
+        * save
+    - 更新 db.table.命令(query,update,options)|更新为整个文档
+        * updateOne 修改一条
+        * update 修改一条
+        * updateMany(query,{"$set":更新json对象}) 批量更新
+        * update(query,{"$set":更新json对象},false,true) 批量更新 
+        * 更新操作符
+            1. $set 指定一个键的值,如果键不存在,则创建
+            2. $unset 从文档移除指定的键
+            3. $inc 增加数值
+            4. $rename 重新命名字段,嵌入文档可以用 一级字段名.二级字段名的方式修改
+            5. $push 如果指定的键已经存在，会向已有的数组末尾加入一个元素，要是没有就会创建一个新的数组
+            6. $pull 移除指定字段值为数组，且匹配 pull语句声明的查询条件的所有元素
+            7. $pop 删除值
+                - 删除数组内第一个值：{$pop:{field:-1}}、删除数组内最后一个值：{$pop:{field:1}}
+    - 删除
+        * db.table.remove(query,{jsonOne:true})
+        * deleteOne
+        * deleteMany,若deleteMany({}),删除所有
+    - 查询
+        * find(query)|query({}) 所有
+        * distinct('去重字段')
+        * find().pretty() 可读形式返回
+        * 比较运算
+            - $ne 不等于
+            - $gt 大于
+            - $lt 小于
+            - $gte 大于等于
+            - $lte 小于等于
+            - $and,$or
+            - $mod 取余
+            - $not 取反
+        * find(query,{字段名:1|0}) 展示部分字段 1展示,0不展示
+        * find().sort(字段名,-1|1) 1是升序,-1是降序
+        * find().skip((pageNum-1)*pageSize).limit(pageSize) 分页
+        * 聚合
+            - count
+            - avg 平均
+            - min
+            - max
+        * aggregate 聚合查询
+        * getIndexes() 获取索引
+        * db.table.ensureIndex(字段:-1|1) -1降序,1升序
+            
+          
+              
