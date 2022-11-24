@@ -38,7 +38,7 @@
     <zkclient.version>0.1</zkclient.version>
     <activemq.version>5.11.2</activemq.version>
     <freemarker.version>2.3.23</freemarker.version>
-    <hibernate.version>4.3.6.Final</hibernate.version>
+    <hibernate.version>5.3.20.Final</hibernate.version>
     <c3p0.version>0.9.1.2</c3p0.version>
     <srping-data-jpa.version>1.7.1.RELEASE</srping-data-jpa.version>
     <spring-data-redis.version>1.0.2.RELEASE</spring-data-redis.version>
